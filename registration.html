@@ -8,14 +8,15 @@
 		   </p>-->
 		   <ol style="list-style-type:decimal">
 			<li>
-				Each individual who wishes to attend ICoRD’27 needs to register by filling out the registration form (see further below) and by paying the registration fee (for exceptions, see point 4. below). The type of registration fee will be decided by the affiliation and not nationality.
+				Each individual who wishes to attend ICoRD’27 needs to register by filling out the registration form (see further below) and by paying the registration fee (for exceptions, see point 4. below). The type of registration fee will be decided by the nationality of affiliation and not the author's nationality.
 			</li>
 			<li>
 				For each paper, at least one author must register by paying the registration fee.
 			</li>
 			<li>
-				A single registration fee can be used by an author for up to two of his/her papers. If an author has more than two papers, he/she needs to pay separate registration fees for the additional papers.
+				A single registration fee can be used by an author for up to two of his/her papers.</li> <li>If an author has more than two papers, he/she needs to fill out the registration form again(reload the page) and pay separate registration fees for the additional papers
 			</li>
+   
 			<li>
 				Invited delegates still need to fill-out the registration form but do not need to pay the registration fee .
 			</li>
@@ -68,7 +69,7 @@
 </tr>
 
 <tr>
-<td><b>Bachelors Student</b></td>
+<td><b>Bachelor's Student</b></td>
 <td>600 USD</td>
 <td>540 USD</td>
 <td>8000 + 1440 GST</td>
@@ -78,7 +79,7 @@
 </tr>
 
 <tr>
-<td><b>Masters Student</b></td>
+<td><b>Master's Student</b></td>
 <td>600 USD</td>
 <td>540 USD</td>
 <td>8000 + 1440 GST</td>
@@ -157,8 +158,10 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
 </ol>
 		  
 		  <p><i>Please note that, the registration fees does not include Accommodation charges.</i></p>
-		  <h4 class=featurette-heading>Charges for extra pages:</h4>
-<p>If your paper exceeds 10 pages, you need to pay an additional page charge for the publication. A maximum of 2 additional pages are allowed, i.e., the maximum size of the paper, including all sections, is 12 pages. The fixed page charge for extra pages (whether it exceeds by 1 or 2 pages) is:
+		<h4 class="featurette-heading">Charges for extra pages:</h4>
+
+<p>
+  If your paper exceeds 10 pages, you need to pay an additional page charge for the publication. A maximum of 2 additional pages are allowed, i.e., the maximum size of the paper, including all sections, is 12 pages. The extra page charge is INR 1,500 per paper for institutions/organisations in India/SAARC countries and USD 50 per paper for institutions/organisations outside India/SAARC countries.
 </p>
 <div>
 
@@ -177,33 +180,13 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
   </div>
 
   <div class="col-md-6">
-    <label>Nationality</label><br>
-
-    <input type="radio"
-           name="participantNationality"
-           id="participantIndian"
-           value="indian">
-
-    <label for="participantIndian">
-      Indian / SAARC
-    </label>&nbsp;&nbsp;
-
-    <input type="radio"
-           name="participantNationality"
-           id="participantInternational"
-           value="international">
-
-    <label for="participantInternational">
-      International
-    </label>
-  </div>
-
-  <div class="col-md-6 mt-3">
-    <label for="participantEmail">Email</label>
-    <input type="email"
-           id="participantEmail"
-           class="form-control"
-           placeholder="Enter email address">
+    <label for="participantNationality">Nationality</label>
+    <select id="participantNationality" class="form-control">
+      <option value="">Select nationality</option>
+      <option value="indian">Indian</option>
+      <option value="saarc">SAARC</option>
+      <option value="other">Other</option>
+    </select>
   </div>
 
 </div>
@@ -243,7 +226,7 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
       </option>
 
       <option value="international">
-        International
+        Other
       </option>
 
     </select>
@@ -262,11 +245,11 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
       <option value="">Select category</option>
 
       <option value="bachelors">
-        Bachelors Student
+        Bachelor's Student
       </option>
 
       <option value="masters">
-        Masters Student
+        Master's Student
       </option>
 
       <option value="phd_student">
@@ -315,18 +298,44 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
 
   <div class="col-md-6 mt-3">
 
-    <label for="papersSubmitted">
-      Papers Submitted
-    </label>
+<label for="papersSubmitted">Number of Papers</label>
 
-    <select id="papersSubmitted"
-            class="form-control">
+<input type="number"
+       id="papersSubmitted"
+       class="form-control"
+       min="0"
+       max="2"
+       step="1"
+       value="0"
+       inputmode="numeric">
 
-      <option value="0">0 Papers</option>
-      <option value="1">1 Paper</option>
-      <option value="2">2 Papers</option>
+<small class="form-text text-muted">
+    One registration covers up to 2 papers.
+</small>
 
-    </select>
+<div id="papersLimitMessage"
+     style="display:none; color:red; margin-top:5px;">
+    <strong>Fill separate form for more than 2 papers.</strong>
+</div>
+
+<script>
+papersSubmitted.addEventListener("input", function () {
+
+  const current = Number(this.value);
+
+  if (current > 2) {
+    this.value = 2;
+    papersLimitMessage.style.display = "block";
+  }
+
+  if (current < 0 || isNaN(current)) {
+    this.value = 0;
+  }
+
+  calculateTotal();
+
+});
+</script>
 
   </div>
 
@@ -334,33 +343,52 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
   <div class="col-md-6 mt-3">
 
     <label for="extraPages">
-      Extra Pages
+      Number of Papers with More Than 10 Pages
     </label>
 
-    <select id="extraPages"
-            class="form-control">
-
-      <option value="0">
-        No Extra Pages
-      </option>
-
-      <option value="1">
-        1 Extra Page
-      </option>
-
-      <option value="2">
-        2 Extra Pages
-      </option>
-
-    </select>
+    <input type="number"
+           id="extraPages"
+           class="form-control"
+           min="0"
+           step="1"
+           value="0"
+           inputmode="numeric">
 
     <small class="form-text text-muted">
-      Flat fee for extra pages: USD 50 or INR 1500.
+      Extra-page fee is charged per paper exceeding 10 pages, based on the nationality of affiliation.
     </small>
 
   </div>
+  <div class="col-md-6 mt-3">
+
+    <label>
+        Reviewer / Committee Member
+    </label>
+
+    <div style="margin-top:10px;">
+
+        <label style="margin-right:25px; cursor:pointer;">
+            <input type="radio"
+                   name="reviewerCommittee"
+                   value="yes">
+            Yes
+        </label>
+
+        <label style="cursor:pointer;">
+            <input type="radio"
+                   name="reviewerCommittee"
+                   value="no"
+                   checked>
+            No
+        </label>
+
+    </div>
 
 </div>
+
+</div>
+
+
 
 
 <br>
@@ -377,9 +405,11 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
 
   <br>
 
-  <a href="#"
-     id="descinBuyLink">
-    Buy DeScIn 2Y Membership
+  <a href="https://www.descin.in/"
+     id="descinBuyLink"
+     target="_blank"
+     rel="noopener noreferrer">
+    DeScIn
   </a>
 
 </div>
@@ -390,30 +420,46 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
 
 <!-- PAYMENT METHOD FIRST -->
 
-<p><b>Payment Method:</b></p>
+<div style="display:flex; align-items:center; gap:25px;">
+
+	<!-- Razorpay -->
+	<label for="paymentRazorpay"
+	       style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+		<input type="radio"
+		       name="paymentMethod"
+		       id="paymentRazorpay"
+		       value="razorpay">
+
+		<img src="assets/images/logo27/razorpay.png"
+		     alt="Razorpay"
+		     style="height:32px; width:auto; display:block;">
+    <span>Razorpay</span>
+	</label>
+
+	<!-- SBI Collect -->
+	<label for="paymentSBCollect"
+	       style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+		<input type="radio"
+		       name="paymentMethod"
+		       id="paymentSBCollect"
+		       value="sbcollect">
+
+		<img src="assets/images/logo27/sbi.png"
+		     alt="SB Collect"
+		     style="height:32px; width:32px; object-fit:contain; display:block;">
+
+		<span>SB Collect</span>
+	</label>
+  <div id="sbiUsdConversion"
+     style="display:none; margin-top:8px; color:#00438f;">
+    <span id="sbiConversionText"></span>
+</div>
+
+</div>
+
 <p style="color:red;">
-	<strong>Note:</strong> A 2% convenience fee will be added when using Razorpay.
+  <strong>Note:</strong> A 3% convenience fee will be added when using Razorpay.
 </p>
-
-<input type="radio"
-       name="paymentMethod"
-       id="paymentRazorpay"
-       value="razorpay">
-
-<label for="paymentRazorpay">
-  Razorpay
-</label>
-
-&nbsp;&nbsp;
-
-<input type="radio"
-       name="paymentMethod"
-       id="paymentSBConnect"
-       value="sbconnect">
-
-<label for="paymentSBConnect">
-  SB Connect
-</label>
 
 
 <br><br>
@@ -435,6 +481,7 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
 <span id="registrationFee">0</span>
 </td>
 </tr>
+
 
 
 <tr id="descinFeeRow" style="display:none;">
@@ -462,17 +509,17 @@ After 15th October 2026, a late registration fee of <strong>50 USD</strong> for 
 
 
 <tr>
-<td>Convenience Charge</td>
+<td>GST</td>
 <td>
-<span id="convenienceCharge">0</span>
+<span id="gstAmount">0</span>
 </td>
 </tr>
 
 
 <tr>
-<td>GST</td>
+<td>Convenience Charge</td>
 <td>
-<span id="gstAmount">0</span>
+<span id="convenienceCharge">0</span>
 </td>
 </tr>
 
@@ -671,17 +718,21 @@ Pay Now
   const affiliationNationality =
     document.getElementById("affiliationNationality");
 
+  const papersSubmitted =
+    document.getElementById("papersSubmitted");
+
   const registrationCategory =
     document.getElementById("registrationCategory");
 
   const existingMembership =
     document.getElementById("existingMembership");
+    const reviewerCommittee =
+    document.querySelectorAll(
+        'input[name="reviewerCommittee"]'
+    );
 
-  const participantIndian =
-    document.getElementById("participantIndian");
-
-  const participantInternational =
-    document.getElementById("participantInternational");
+  const participantNationality =
+    document.getElementById("participantNationality");
 
   const extraPages =
     document.getElementById("extraPages");
@@ -698,11 +749,8 @@ Pay Now
   const registrationFee =
     document.getElementById("registrationFee");
 
-  const descinFee =
-    document.getElementById("descinFee");
 
-  const descinFeeRow =
-    document.getElementById("descinFeeRow");
+  
 
   const extraPagesFee =
     document.getElementById("extraPagesFee");
@@ -727,6 +775,12 @@ Pay Now
 
   const totalInput =
     document.getElementById("total");
+
+  const sbiUsdConversion =
+    document.getElementById("sbiUsdConversion");
+
+const sbiConversionText =
+    document.getElementById("sbiConversionText");
 
 
   /* ==========================================================
@@ -772,330 +826,331 @@ Pay Now
   }
 
 
-  /* ==========================================================
-     DESCIN DISPLAY
-     ========================================================== */
-
-  function updateDescin() {
-
-    const nationality =
-      affiliationNationality.value;
-
-    const membership =
-      existingMembership.value;
-
-    const descinOption =
-      existingMembership.querySelector(
-        'option[value="descin"]'
-      );
-
-
-    if (
-      nationality === "indian" &&
-      membership !== "descin"
-    ) {
-
-      descinSection.style.display =
-        "block";
-
-      descinBuyLink.style.display =
-        "inline";
-
-    } else {
-
-      descinSection.style.display =
-        "none";
-
-      addDescinMembership.checked =
-        false;
-
-    }
-
-
-    if (
-      membership === "descin"
-    ) {
-
-      descinBuyLink.style.display =
-        "none";
-
-    }
-
-
-    if (
-      nationality === "international"
-    ) {
-
-      descinOption.disabled =
-        true;
-
-      if (
-        membership === "descin"
-      ) {
-
-        existingMembership.value =
-          "none";
-
-      }
-
-    } else {
-
-      descinOption.disabled =
-        false;
-
-    }
-
-  }
-
 
   /* ==========================================================
      CALCULATE
      ========================================================== */
 
-  function calculateTotal() {
+  function syncExtraPagesLimit() {
+    const paperCount =
+      Math.max(0, parseInt(papersSubmitted.value, 10) || 0);
+
+    extraPages.max = paperCount;
+
+    const current =
+      Math.max(0, parseInt(extraPages.value, 10) || 0);
+
+    if (current > paperCount) {
+      extraPages.value = paperCount;
+    }
+  }
+
+function updateDescin() {
+
+  const nationality =
+    participantNationality.value;
+
+  const membership =
+    existingMembership.value;
+
+  const descinOption =
+    existingMembership.querySelector(
+      'option[value="descin"]'
+    );
+
+
+  /*
+   * DeScIn membership is available
+   * to Indian and SAARC participants.
+   */
+  if (
+    (nationality === "indian") &&
+    membership !== "descin"
+  ) {
+
+    descinSection.style.display = "block";
+    descinBuyLink.style.display = "inline";
+
+  } else {
+
+    descinSection.style.display = "none";
+    addDescinMembership.checked = false;
+
+  }
+
+
+  /*
+   * Existing DeScIn members do not
+   * need the purchase link.
+   */
+  if (membership === "descin") {
+    descinBuyLink.style.display = "none";
+  }
+
+
+  /*
+   * Disable DeScIn membership for
+   * participants of Other nationality.
+   */
+  if (nationality === "other") {
+
+    descinOption.disabled = true;
+
+    if (membership === "descin") {
+      existingMembership.value = "none";
+    }
+
+  } else {
+
+    descinOption.disabled = false;
+
+  }
+
+}
+async function updateSbiUsdConversion() {
+
+    const selectedPayment =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
 
     const nationality =
-      affiliationNationality.value;
+        affiliationNationality.value;
 
-    const category =
-      registrationCategory.value;
-
-    const membership =
-      existingMembership.value;
-
-    const selectedExtraPages =
-      Number(extraPages.value) || 0;
-
-
+    // Show only when:
+    // 1. SB Collect is selected
+    // 2. Affiliation nationality is Other
     if (
-      !nationality ||
-      !category
+        !selectedPayment ||
+        selectedPayment.value !== "sbcollect" ||
+        nationality !== "international"
     ) {
+        sbiUsdConversion.style.display = "none";
+        return;
+    }
 
+    const usdTotal =
+        Number(totalInput.value);
+
+    if (!usdTotal || usdTotal <= 0) {
+        sbiUsdConversion.style.display = "none";
+        return;
+    }
+
+    sbiUsdConversion.style.display = "block";
+
+    sbiConversionText.textContent =
+        "Fetching current USD → INR rate...";
+
+    try {
+
+        const response = await fetch(
+            "https://api.frankfurter.dev/v2/rate/USD/INR"
+        );
+
+        if (!response.ok) {
+            throw new Error("Exchange rate request failed");
+        }
+
+        const data = await response.json();
+
+        const rate = data.rate;
+
+        const inrTotal =
+            usdTotal * rate;
+
+        sbiConversionText.innerHTML =
+            "<b>Approximate INR amount:</b> " +
+            Math.round(inrTotal).toLocaleString("en-IN") +
+            "<br><small>USD 1 = INR " +
+            rate.toFixed(2) +
+            "</small>";
+
+    } catch (error) {
+
+        sbiConversionText.textContent =
+            "Unable to fetch the current USD → INR rate.";
+
+        console.error(error);
+    }
+}
+  function calculateTotal() {
+
+    const nationality = affiliationNationality.value;
+    const category = registrationCategory.value;
+    const membership = existingMembership.value;
+
+    const paperCount =
+      Math.max(0, parseInt(papersSubmitted.value, 10) || 0);
+
+    const papersOver10Pages =
+      Math.max(0, parseInt(extraPages.value, 10) || 0);
+
+    if (!nationality || !category) {
       registrationFee.textContent = "0";
       descinFee.textContent = "0";
       extraPagesFee.textContent = "0";
       lateFee.textContent = "0";
-      convenienceCharge.textContent = "0";
       gstAmount.textContent = "0";
+      convenienceCharge.textContent = "0";
       totalAmount.textContent = "0";
       totalInput.value = "0";
 
       descinFeeRow.style.display = "none";
       extraPagesFeeRow.style.display = "none";
       lateFeeRow.style.display = "none";
-
       return;
-
     }
 
-
-    const feeData =
-      FEES[category][nationality];
-
+    const feeData = FEES[category][nationality];
 
     /*
-     * Start with base registration fee.
+     * One registration covers up to 2 papers.
+     * Additional papers are charged as additional registrations.
      */
-
-    let baseFee =
-      isMember()
-        ? feeData.member
-        : feeData.normal;
+    let baseFee = isMember()
+    ? feeData.member
+    : feeData.normal;
 
 
-    /*
-     * DeScIn bundle replaces the
-     * normal registration fee.
-     */
+/*
+ * DeScIn membership bundle
+ */
+if (
+    nationality === "indian" &&
+    addDescinMembership.checked &&
+    membership !== "descin"
+) {
+    baseFee = feeData.descinBundle;
+
+    descinFee.textContent = "Included in registration";
+    descinFeeRow.style.display = "table-row";
+
+} else {
+    descinFeeRow.style.display = "none";
+}
+
+
+/*
+ * Reviewer / Committee Member discount
+ *
+ * 10% discount applies only when:
+ * - Reviewer/Committee Member = Yes
+ * - Existing Membership = None
+ */
+const reviewerSelected =
+    document.querySelector(
+        'input[name="reviewerCommittee"]:checked'
+    )?.value === "yes";
+
+if (
+    reviewerSelected &&
+    membership === "none"
+) {
+    baseFee = baseFee * 0.90;
+}
 
     if (
       nationality === "indian" &&
       addDescinMembership.checked &&
       membership !== "descin"
     ) {
-
-      baseFee =
-        feeData.descinBundle;
-
-      descinFee.textContent =
-        "Included in registration";
-
-      descinFeeRow.style.display =
-        "table-row";
-
+      baseFee = feeData.descinBundle;
+      descinFee.textContent = "Included in registration";
+      descinFeeRow.style.display = "table-row";
     } else {
-
-      descinFeeRow.style.display =
-        "none";
-
+      descinFeeRow.style.display = "none";
     }
 
+  
 
     /*
-     * EXTRA PAGE FEE
-     *
-     * 1 page and 2 pages both have
-     * exactly the same flat charge.
+     * Extra-page fee is charged once for each paper having
+     * more than 10 pages, based on affiliation nationality.
      */
+    const extraPageAmount =
+      papersOver10Pages * EXTRA_PAGE_FEE[nationality];
 
-    let extraPageAmount = 0;
-
-    if (
-      selectedExtraPages > 0
-    ) {
-
-      extraPageAmount =
-        EXTRA_PAGE_FEE[nationality];
-
+    if (papersOver10Pages > 0) {
       extraPagesFee.textContent =
-        formatMoney(
-          extraPageAmount,
-          nationality
-        );
-
-      extraPagesFeeRow.style.display =
-        "table-row";
-
+        formatMoney(extraPageAmount, nationality);
+      extraPagesFeeRow.style.display = "table-row";
     } else {
-
-      extraPagesFeeRow.style.display =
-        "none";
-
+      extraPagesFeeRow.style.display = "none";
     }
-
-
-    /*
-     * LATE FEE
-     */
 
     let lateFeeAmount = 0;
 
-    if (
-      new Date() >= LATE_FEE_DATE
-    ) {
-
-      lateFeeAmount =
-        LATE_FEE[nationality];
-
+    if (new Date() >= LATE_FEE_DATE) {
+      lateFeeAmount = LATE_FEE[nationality];
       lateFee.textContent =
-        formatMoney(
-          lateFeeAmount,
-          nationality
-        );
-
-      lateFeeRow.style.display =
-        "table-row";
-
+        formatMoney(lateFeeAmount, nationality);
+      lateFeeRow.style.display = "table-row";
     } else {
-
-      lateFeeRow.style.display =
-        "none";
-
+      lateFeeRow.style.display = "none";
     }
-
-
-    /*
-     * SUBTOTAL BEFORE PAYMENT CHARGE
-     */
 
     const subtotal =
       baseFee +
       extraPageAmount +
       lateFeeAmount;
 
+    /*
+     * GST is calculated first.
+     * Indian / SAARC only.
+     */
+    let gst = 0;
+
+    if (nationality === "indian") {
+      gst = subtotal * GST_RATE;
+    }
 
     /*
-     * RAZORPAY CONVENIENCE CHARGE
-     *
-     * Exactly 2% of the subtotal.
-     *
-     * SB Connect = 0.
+     * Razorpay convenience charge is 2% of:
+     * subtotal + GST (when GST applies).
+     * SB Collect = 0.
      */
-
     const selectedPayment =
       document.querySelector(
         'input[name="paymentMethod"]:checked'
       );
 
-
     let convenienceAmount = 0;
 
     if (
       selectedPayment &&
-      selectedPayment.value ===
-      "razorpay"
+      selectedPayment.value === "razorpay"
     ) {
-
       convenienceAmount =
-        subtotal * 0.02;
-
+        (subtotal + gst) * 0.03;
     }
 
-
-    /*
-     * GST
-     *
-     * Indian / SAARC only.
-     *
-     * GST is calculated after adding
-     * the Razorpay convenience charge.
-     */
-
-    let gst = 0;
-
-    if (
-      nationality === "indian"
-    ) {
-
-      gst =
-        (subtotal + convenienceAmount) *
-        GST_RATE;
-
-    }
-
-
-    /*
-     * FINAL TOTAL
-     */
-
-    const total =
+    const total = Math.round(
       subtotal +
-      convenienceAmount +
-      gst;
-
+      gst +
+      convenienceAmount
+    );
 
     registrationFee.textContent =
-      formatMoney(
-        baseFee,
-        nationality
-      );
+      formatMoney(baseFee, nationality);
 
+
+
+    extraPagesFee.textContent =
+      formatMoney(extraPageAmount, nationality);
 
     convenienceCharge.textContent =
-      formatMoney(
-        convenienceAmount,
-        nationality
-      );
-
+      formatMoney(convenienceAmount, nationality);
 
     gstAmount.textContent =
-      formatMoney(
-        gst,
-        nationality
-      );
-
+      formatMoney(gst, nationality);
 
     totalAmount.textContent =
-      formatMoney(
-        total,
-        nationality
-      );
+      formatMoney(total, nationality);
 
+    totalInput.value = total.toFixed(2);
 
-    totalInput.value =
-      total.toFixed(2);
-
+    updateSbiUsdConversion();
   }
 
 
@@ -1132,12 +1187,44 @@ Pay Now
 
       }
     );
+reviewerCommittee.forEach(function (radio) {
 
+    radio.addEventListener(
+        "change",
+        calculateTotal
+    );
+
+});
+
+  papersSubmitted
+    .addEventListener(
+      "input",
+      function () {
+        this.value = Math.max(
+          0,
+          parseInt(this.value, 10) || 0
+        );
+        syncExtraPagesLimit();
+        calculateTotal();
+      }
+    );
 
   extraPages
     .addEventListener(
-      "change",
-      calculateTotal
+      "input",
+      function () {
+        syncExtraPagesLimit();
+
+        const max =
+          parseInt(this.max, 10) || 0;
+
+        this.value = Math.min(
+          max,
+          Math.max(0, parseInt(this.value, 10) || 0)
+        );
+
+        calculateTotal();
+      }
     );
 
 
@@ -1147,25 +1234,20 @@ Pay Now
       calculateTotal
     );
 
-
-  participantIndian
-    .addEventListener(
-      "change",
-      calculateTotal
-    );
-
-
-  participantInternational
-    .addEventListener(
-      "change",
-      calculateTotal
-    );
+participantNationality
+  .addEventListener(
+    "change",
+    function () {
+      updateDescin();
+      calculateTotal();
+    }
+  );
 
 
   /*
    * IMPORTANT:
    * Changing the payment method immediately
-   * recalculates the 2% convenience charge.
+   * recalculates the 3% convenience charge on subtotal + GST.
    */
 
   document
@@ -1182,31 +1264,9 @@ Pay Now
     });
 
 
-  /* ==========================================================
-     DESCIN LINK
-     ========================================================== */
+ 
 
-  descinBuyLink
-    .addEventListener(
-      "click",
-      function (event) {
-
-        event.preventDefault();
-
-        if (
-          affiliationNationality.value ===
-          "indian"
-        ) {
-
-          addDescinMembership.checked =
-            true;
-
-          calculateTotal();
-
-        }
-
-      }
-    );
+ 
 
 
   /* ==========================================================
@@ -1225,12 +1285,6 @@ Pay Now
             .value
             .trim();
 
-        const email =
-          document
-            .getElementById("participantEmail")
-            .value
-            .trim();
-
         const affiliation =
           document
             .getElementById("affiliation")
@@ -1238,9 +1292,7 @@ Pay Now
             .trim();
 
         const participantNationality =
-          document.querySelector(
-            'input[name="participantNationality"]:checked'
-          );
+          document.getElementById("participantNationality");
 
         const paymentMethod =
           document.querySelector(
@@ -1254,14 +1306,8 @@ Pay Now
         }
 
 
-        if (!participantNationality) {
+        if (!participantNationality.value) {
           alert("Please select participant nationality.");
-          return;
-        }
-
-
-        if (!email) {
-          alert("Please enter the email address.");
           return;
         }
 
@@ -1301,8 +1347,6 @@ Pay Now
 
           name: name,
 
-          email: email,
-
           affiliation: affiliation,
 
           participantNationality:
@@ -1318,12 +1362,10 @@ Pay Now
             existingMembership.value,
 
           papersSubmitted:
-            document.getElementById(
-              "papersSubmitted"
-            ).value,
+            Math.max(0, parseInt(papersSubmitted.value, 10) || 0),
 
-          extraPages:
-            Number(extraPages.value),
+          papersOver10Pages:
+            Math.max(0, parseInt(extraPages.value, 10) || 0),
 
           addDescinMembership:
             addDescinMembership.checked,
@@ -1355,9 +1397,32 @@ Pay Now
          * Razorpay:
          * startRazorpayPayment(paymentData);
          *
-         * SB Connect:
+         * SB Collect:
          * startSBConnectPayment(paymentData);
          */
+        if (paymentData.affiliationNationality === "indian") {
+    // Indian / SAARC → SBI Collect
+    if (paymentData.paymentMethod === "sbcollect") {
+        window.location.href =
+            "https://sbcollect.sbi.bank.in/sbicollect/icollecthome.htm?corpID=6809560";
+    }
+    // Indian / SAARC + Razorpay
+    else if (paymentData.paymentMethod === "razorpay") {
+        window.location.href =
+            "https://razorpay.me/@descinacademy";
+    }
+}
+else if (paymentData.affiliationNationality === "international") {
+    // Other → Razorpay
+    if (paymentData.paymentMethod === "razorpay") {
+        window.location.href =
+            "https://razorpay.me/@descinacademy";
+    }
+    if (paymentData.paymentMethod === "sbcollect") {
+        window.location.href =
+            "https://sbcollect.sbi.bank.in/sbicollect/icollecthome.htm?corpID=6809560";
+    }
+}
 
       }
     );
@@ -1368,26 +1433,26 @@ Pay Now
    */
 
   updateDescin();
+  syncExtraPagesLimit();
   calculateTotal();
 
 })();
 
 </script>
 
+
 </div>
+<br>
 		  
 
 	<h4 class=featurette-heading>Conference Registration Form</h4>
 <p>
-Online registration form is given below.<!-- In case of any issues regarding submitting online registration form, you may download it from <a href="http://cpdm.iisc.ac.in/icord19/ICoRD_19_Reg_Form.pdf">here</a> and send a scanned copy to icord.conf@iisc.ac.in and copy to ac123@iisc.ac.in.-->
-<br/>
-<br/>
-<br/>
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfgJTQMBJwIJJ6P9xB_Cya5HG2uHy9xgJuC-xRsRp_y03YamA/viewform?usp=header" width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
 
+
+<iframe data-tally-src="https://tally.so/embed/KYbN1X?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="3981" frameborder="0" marginheight="0" marginwidth="0" title="ICoRD'27 Registration Form"></iframe>
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
 	</p>  
-		  <p><i>If you have trouble viewing the form, <a href="https://docs.google.com/forms/d/e/1FAIpQLSfgJTQMBJwIJJ6P9xB_Cya5HG2uHy9xgJuC-xRsRp_y03YamA/viewform?usp=header" target="_blank">click here.</a></i></p>
-	
+		 
 		<h2 class="featurette-heading">Frequently Asked Questions (FAQs)
 		</h2>
 
@@ -1469,6 +1534,7 @@ Online registration form is given below.<!-- In case of any issues regarding sub
 			Answer: No. Registration fees are not refundable.
 		</i>
 	</li>
+
 
 </ol>
 
